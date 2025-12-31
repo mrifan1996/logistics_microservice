@@ -1,7 +1,7 @@
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
-    DATABASE_URL: str = "postgresql://postgres:postgres@localhost:5432/inventory_db"
+    DATABASE_URL: str = "postgresql://rifan:12345678@localhost:5432/inventory_db"
 
     class Config:
         env_file = ".env"
