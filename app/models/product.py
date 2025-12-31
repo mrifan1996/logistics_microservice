@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Numeric, CheckConstraint
-from .base import Base
+from app.core.database import Base
 
 class Product(Base):
     __tablename__ = "products"
@@ -10,6 +10,6 @@ class Product(Base):
     stock_quantity = Column(Integer, nullable=False)
 
     __table_args__ = (
-        CheckConstraint("stock_quantity >= 0", name="ck_stock_non_negative"),
-        CheckConstraint("price >= 0", name="ck_price_non_negative"),
+        CheckConstraint("stock_quantity >= 0", name="non_negative_stock_check"),
+        CheckConstraint("price >= 0", name="non_negative_price_check"),
     )
