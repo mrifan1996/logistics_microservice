@@ -1,10 +1,10 @@
 alembic
+black
 fastapi
-sqlalchemy
-psycopg2-binary
-pydantic-settings
-uvicorn[standard]
-pytest
 flake8
 isort
-black
+psycopg2-binary
+pydantic-settings
+pytest
+sqlalchemy
+uvicorn[standard]
