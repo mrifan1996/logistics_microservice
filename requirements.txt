@@ -5,3 +5,7 @@ psycopg2-binary
 pydantic-settings
 uvicorn[standard]
 pytest
+flake8
+isort
+black
+mypy

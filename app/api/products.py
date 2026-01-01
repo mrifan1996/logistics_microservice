@@ -1,5 +1,6 @@
 from math import ceil
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+
+from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
@@ -8,26 +9,21 @@ from app.schemas.product import PaginatedProducts, ProductCreate, ProductRespons
 
 router = APIRouter(prefix="/products", tags=["Products"])
 
-@router.post(
-    "",
-    response_model=ProductResponse,
-    status_code=status.HTTP_201_CREATED
-)
-def create_product(
-    payload: ProductCreate,
-    db: Session = Depends(get_db)
-):
+
+@router.post("", response_model=ProductResponse, status_code=status.HTTP_201_CREATED)
+def create_product(payload: ProductCreate, db: Session = Depends(get_db)):
     product = Product(**payload.model_dump())
     db.add(product)
     db.commit()
     db.refresh(product)
     return product
 
+
 @router.get("", response_model=PaginatedProducts)
 def list_products(
     db: Session = Depends(get_db),
     page: int = Query(1, ge=1),
-    page_size: int = Query(50, ge=1, le=100)
+    page_size: int = Query(50, ge=1, le=100),
 ):
     total_items = db.query(Product).count()
     total_pages = ceil(total_items / page_size)
@@ -39,5 +35,5 @@ def list_products(
         total_items=total_items,
         total_pages=total_pages,
         current_page=page,
-        items=[ProductResponse.model_validate(p) for p in products]
+        items=[ProductResponse.model_validate(p) for p in products],
     )

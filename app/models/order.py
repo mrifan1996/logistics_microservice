@@ -1,9 +1,10 @@
-from sqlalchemy import Column, Integer, DateTime, Enum
+from sqlalchemy import Column, DateTime, Enum, Integer
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 from app.core.database import Base
 from app.enums import OrderStatus
+
 
 class Order(Base):
     __tablename__ = "orders"
@@ -13,7 +14,5 @@ class Order(Base):
     status = Column(Enum(OrderStatus), nullable=False, default=OrderStatus.PENDING)
 
     items = relationship(
-        "OrderItem",
-        back_populates="order",
-        cascade="all, delete-orphan"
+        "OrderItem", back_populates="order", cascade="all, delete-orphan"
     )

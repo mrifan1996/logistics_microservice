@@ -1,5 +1,6 @@
 from fastapi import FastAPI
-from app.api import products, orders
+
+from app.api import orders, products
 
 app = FastAPI(title="Inventory & Order Management")
 

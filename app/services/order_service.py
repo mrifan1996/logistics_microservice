@@ -1,10 +1,10 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import select
+
+from app.enums import OrderStatus
 from app.models.order import Order
 from app.models.order_item import OrderItem
 from app.models.product import Product
-from app.enums import OrderStatus
-from fastapi import HTTPException
+
 
 def create_order(db: Session, items: list):
     """
@@ -17,7 +17,12 @@ def create_order(db: Session, items: list):
     with db.begin_nested():  # ensures commit/rollback automatically
         # Lock products for update
         product_ids = [item.product_id for item in items]
-        products = db.query(Product).filter(Product.id.in_(product_ids)).with_for_update().all()
+        products = (
+            db.query(Product)
+            .filter(Product.id.in_(product_ids))
+            .with_for_update()
+            .all()
+        )
 
         if len(products) != len(product_ids):
             raise ValueError("One or more products not found")
@@ -49,7 +54,7 @@ def create_order(db: Session, items: list):
                 order_id=order.id,
                 product_id=product.id,
                 quantity_ordered=item.quantity,
-                price_at_time_of_order=product.price
+                price_at_time_of_order=product.price,
             )
             db.add(order_item)
             order_items.append(order_item)
