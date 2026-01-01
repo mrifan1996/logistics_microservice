@@ -202,3 +202,9 @@ Tests cover:
 - **Linting:** `flake8`
 
 ---
+
+## Changes I would make
+
+- I would mainly use a test database for testing which would separate concerns of having test data but I did it due to time constraints here
+
+---
