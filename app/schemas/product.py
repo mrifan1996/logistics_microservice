@@ -1,4 +1,5 @@
-from pydantic import BaseModel, Field
+from typing import List
+from pydantic import BaseModel, ConfigDict, Field
 from decimal import Decimal
 
 class ProductCreate(BaseModel):
@@ -12,5 +13,10 @@ class ProductResponse(BaseModel):
     price: Decimal
     stock_quantity: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
+
+class PaginatedProducts(BaseModel):
+    total_items: int
+    total_pages: int
+    current_page: int
+    items: List[ProductResponse]
