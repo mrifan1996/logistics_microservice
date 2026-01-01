@@ -13,8 +13,6 @@ This microservice provides:
 - **Data Integrity**: Atomic transactions, isolation to prevent race conditions, and database constraints.
 - **Testing**: Unit and integration tests using `pytest`.
 
-Optional frontend integration (React/Next.js) can provide a dashboard for managing products and orders.
-
 ---
 
 ## Tech Stack
@@ -39,7 +37,7 @@ Optional frontend integration (React/Next.js) can provide a dashboard for managi
 
 - Create an order with multiple items
 - Check stock and reduce quantities
-- Transactional: ensures atomicity and isolation
+- Ensures atomicity and isolation
 - Rollback on insufficient stock or errors
 - Order items linked to products for historical price tracking
 
@@ -51,42 +49,21 @@ Optional frontend integration (React/Next.js) can provide a dashboard for managi
 
 ---
 
-## Folder Structure
+## 🚀 Quick Start with Docker Compose
 
-```
-logistics_microservice/
-├─ app/
-│  ├─ api/
-│  │  ├─ orders.py        # Order endpoints
-│  │  └─ products.py      # Product endpoints
-│  ├─ core/
-│  │  └─ database.py      # Database session & connection
-│  ├─ enums.py            # Enums like OrderStatus
-│  ├─ models/
-│  │  ├─ order.py
-│  │  ├─ order_item.py
-│  │  └─ product.py
-│  ├─ schemas/
-│  │  ├─ order.py
-│  │  └─ product.py
-│  └─ services/
-│     └─ order_service.py # Order business logic
-├─ tests/
-├─ alembic/               # Database migrations
-├─ requirements.txt
-├─ .env
-└─ README.md
-```
+You can run the service on any system using Docker Compose:
 
----
+```bash
+# Build and start the service and database
+docker-compose up
+```
 
 ## Setup
 
 1. Clone the repo:
 
 ```bash
-git clone <repo_url>
-cd logistics_microservice/logistics_microservice
+git clone https://github.com/mrifan1996/logistics_microservice
 ```
 
 2. Create and activate a virtual environment:
@@ -109,7 +86,7 @@ pip install -r requirements.txt
 Create a `.env` file:
 
 ```env
-DATABASE_URL=postgresql+psycopg2://user:password@localhost:5432/logistics_db
+DATABASE_URL=postgresql+psycopg2://user:password@localhost:5432/db_name
 ```
 
 5. Run database migrations:
@@ -198,7 +175,7 @@ Swagger UI: `http://127.0.0.1:8000/docs`
   - Validates stock availability
   - Deducts stock atomically
   - Rolls back if any product is out of stock
-  - Prevents race conditions using `SELECT FOR UPDATE` and `db.begin_nested()`
+  - Prevents race conditions using `db.begin_nested()`
 
 ---
 
@@ -224,22 +201,4 @@ Tests cover:
 - **Imports:** `isort`
 - **Linting:** `flake8`
 
-Optional pre-commit hooks can enforce these rules automatically.
-
 ---
-
-## Optional Frontend
-
-- React/Next.js dashboard for products and orders
-- View product list, stock, and order status
-- “Ship” button to update pending orders via API
-
----
-
-## Notes
-
-- `db.flush()` is used to populate auto-generated primary keys before committing.
-- `db.begin_nested()` allows nested transactions, useful for tests.
-- Use **Enums** for consistent, type-safe status values.
-- Constraints ensure stock and price cannot be negative.
-
