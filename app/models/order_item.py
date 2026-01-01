@@ -10,10 +10,11 @@ class OrderItem(Base):
     id = Column(Integer, primary_key=True)
     order_id = Column(
         Integer, ForeignKey("orders.id", ondelete="CASCADE"), nullable=False
-    )
+    )  # We want all oders items in an order to be deleted when order is deleted
     product_id = Column(Integer, ForeignKey("products.id"), nullable=False)
 
     quantity_ordered = Column(Integer, nullable=False)
+    # Float is imprecise and can cause errors in financial use cases
     price_at_time_of_order = Column(Numeric(10, 2), nullable=False)
 
     order = relationship("Order", back_populates="items")

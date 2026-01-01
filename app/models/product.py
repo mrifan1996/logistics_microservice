@@ -11,6 +11,7 @@ class Product(Base):
     price = Column(Numeric(10, 2), nullable=False)
     stock_quantity = Column(Integer, nullable=False)
 
+    # Defining database level constraints in case the databse is accessed directly
     __table_args__ = (
         CheckConstraint("stock_quantity >= 0", name="non_negative_stock_check"),
         CheckConstraint("price >= 0", name="non_negative_price_check"),

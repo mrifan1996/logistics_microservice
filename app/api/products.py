@@ -27,6 +27,7 @@ def list_products(
 ):
     total_items = db.query(Product).count()
     total_pages = ceil(total_items / page_size)
+    # This helps it skip previous page based on the current/chosen page
     offset = (page - 1) * page_size
 
     products = db.query(Product).offset(offset).limit(page_size).all()
@@ -35,5 +36,6 @@ def list_products(
         total_items=total_items,
         total_pages=total_pages,
         current_page=page,
+        # Converts SQLAlchemy Product models into Pydantic models.
         items=[ProductResponse.model_validate(p) for p in products],
     )
